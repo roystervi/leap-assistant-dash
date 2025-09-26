@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Header } from './components/Header';
 import { Sidebar } from './components/Sidebar';
+import Settings from './components/Settings';
 import { WeatherCard } from './components/widgets/WeatherCard';
 import { DeviceControls } from './components/widgets/DeviceControls';
 import { EnergyChart } from './components/widgets/EnergyChart';
@@ -12,23 +13,14 @@ export default function App() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [activeSection, setActiveSection] = useState('overview');
 
-  return (
-    <div className="dark min-h-screen bg-background text-foreground">
-      <div className="flex h-screen">
-        <Sidebar 
-          collapsed={sidebarCollapsed}
-          activeSection={activeSection}
-          onSectionChange={setActiveSection}
-        />
-        
-        <div className={`flex-1 flex flex-col transition-all duration-300 ${
-          sidebarCollapsed ? 'ml-16' : 'ml-64'
-        }`}>
-          <Header 
-            onToggleSidebar={() => setSidebarCollapsed(!sidebarCollapsed)}
-          />
-          
-          <main className="flex-1 overflow-auto p-6">
+  const renderContent = () => {
+    switch (activeSection) {
+      case 'settings':
+        return <Settings />;
+      case 'overview':
+      default:
+        return (
+          <div className="p-6">
             <div className="max-w-7xl mx-auto">
               <div className="mb-6">
                 <h1 className="text-3xl font-bold mb-2">Smart Home Dashboard</h1>
@@ -63,6 +55,29 @@ export default function App() {
                 </div>
               </div>
             </div>
+          </div>
+        );
+    }
+  };
+
+  return (
+    <div className="dark min-h-screen bg-background text-foreground">
+      <div className="flex h-screen">
+        <Sidebar 
+          collapsed={sidebarCollapsed}
+          activeSection={activeSection}
+          onSectionChange={setActiveSection}
+        />
+        
+        <div className={`flex-1 flex flex-col transition-all duration-300 ${
+          sidebarCollapsed ? 'ml-16' : 'ml-64'
+        }`}>
+          <Header 
+            onToggleSidebar={() => setSidebarCollapsed(!sidebarCollapsed)}
+          />
+          
+          <main className="flex-1 overflow-auto">
+            {renderContent()}
           </main>
         </div>
       </div>
