@@ -20,7 +20,8 @@ import {
   Upload,
   Monitor,
   Menu,
-  X
+  X,
+  Thermometer
 } from 'lucide-react';
 
 export function ExactDashboard() {
@@ -74,51 +75,6 @@ export function ExactDashboard() {
       return 'flex-1 ml-16';
     }
     return 'flex-1';
-  };
-
-  const getGridClass = () => {
-    switch (screenSize) {
-      case 'tv':
-        return 'grid grid-cols-16 gap-6';
-      case 'desktop':
-        return 'grid grid-cols-12 gap-4';
-      case 'tablet':
-        return 'grid grid-cols-1 lg:grid-cols-2 gap-4';
-      case 'mobile':
-        return 'flex flex-col gap-4';
-      default:
-        return 'grid grid-cols-12 gap-4';
-    }
-  };
-
-  const getAccessoriesColumnClass = () => {
-    switch (screenSize) {
-      case 'tv':
-        return 'col-span-5';
-      case 'desktop':
-        return 'col-span-4';
-      case 'tablet':
-        return 'lg:col-span-1';
-      case 'mobile':
-        return 'w-full';
-      default:
-        return 'col-span-4';
-    }
-  };
-
-  const getRightColumnClass = () => {
-    switch (screenSize) {
-      case 'tv':
-        return 'col-span-11';
-      case 'desktop':
-        return 'col-span-8';
-      case 'tablet':
-        return 'lg:col-span-1';
-      case 'mobile':
-        return 'w-full';
-      default:
-        return 'col-span-8';
-    }
   };
 
   return (
@@ -199,32 +155,26 @@ export function ExactDashboard() {
                 'grid-cols-2'
               }`}>
                 {/* Room Cards */}
-                {['Entrance', 'Backyard', 'Living Room', 'Front Room'].map((room, index) => (
-                  <div key={room} className={`rounded-2xl p-4 relative transition-colors ${
-                    room === 'My Workstation' 
-                      ? 'bg-gradient-to-br from-[#7c3aed] to-[#a855f7] shadow-lg shadow-purple-500/20'
-                      : 'bg-[#1a1d26] hover:bg-[#1f232c]'
-                  }`}>
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center mb-3 ${
-                      room === 'My Workstation' ? 'bg-white/20' : 'bg-gray-700'
-                    }`}>
+                {['Entrance', 'Backyard', 'Living Room', 'Front Room'].map((room) => (
+                  <div key={room} className="bg-[#1a1d26] rounded-2xl p-4 relative hover:bg-[#1f232c] transition-colors h-[100px] flex flex-col">
+                    <div className="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center mb-3">
                       <Home className="w-4 h-4" />
                     </div>
-                    <p className={`text-sm font-medium ${
+                    <p className={`text-sm font-medium mt-auto ${
                       screenSize === 'tablet' ? 'group-hover:block hidden' : ''
                     }`}>{room}</p>
-                    <MoreHorizontal className={`w-4 h-4 absolute top-4 right-4 ${
-                      room === 'My Workstation' ? 'text-white/70' : 'text-gray-400'
-                    } ${screenSize === 'tablet' ? 'group-hover:block hidden' : ''}`} />
+                    <MoreHorizontal className={`w-4 h-4 text-gray-400 absolute top-4 right-4 ${
+                      screenSize === 'tablet' ? 'group-hover:block hidden' : ''
+                    }`} />
                   </div>
                 ))}
 
                 {/* My Workstation - Active */}
-                <div className="bg-gradient-to-br from-[#7c3aed] to-[#a855f7] rounded-2xl p-4 relative shadow-lg shadow-purple-500/20">
+                <div className="bg-gradient-to-br from-[#7c3aed] to-[#a855f7] rounded-2xl p-4 relative shadow-lg shadow-purple-500/20 h-[100px] flex flex-col">
                   <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center mb-3">
                     <Home className="w-4 h-4" />
                   </div>
-                  <p className={`text-sm font-medium ${
+                  <p className={`text-sm font-medium mt-auto ${
                     screenSize === 'tablet' ? 'group-hover:block hidden' : ''
                   }`}>My Workstation</p>
                   <MoreHorizontal className={`w-4 h-4 text-white/70 absolute top-4 right-4 ${
@@ -233,7 +183,7 @@ export function ExactDashboard() {
                 </div>
 
                 {/* Add New */}
-                <div className="border-2 border-dashed border-[#7c3aed] rounded-2xl p-4 flex flex-col items-center justify-center min-h-[100px] hover:border-[#a855f7] hover:bg-[#7c3aed]/5 transition-colors">
+                <div className="border-2 border-dashed border-[#7c3aed] rounded-2xl p-4 flex flex-col items-center justify-center h-[100px] hover:border-[#a855f7] hover:bg-[#7c3aed]/5 transition-colors">
                   <Plus className="w-6 h-6 text-[#7c3aed] mb-2" />
                   <p className={`text-sm text-[#7c3aed] font-medium text-center ${
                     screenSize === 'tablet' ? 'group-hover:block hidden' : ''
@@ -258,7 +208,7 @@ export function ExactDashboard() {
                   { name: 'Night Vision', icon: Settings, active: false },
                   { name: 'Smart Home', icon: Home, active: false }
                 ].map((mode) => (
-                  <div key={mode.name} className={`rounded-xl p-3 flex flex-col items-center text-center transition-colors cursor-pointer ${
+                  <div key={mode.name} className={`rounded-xl p-3 flex flex-col items-center text-center transition-colors cursor-pointer h-[70px] ${
                     mode.active 
                       ? 'bg-gradient-to-br from-[#7c3aed] to-[#a855f7] shadow-lg shadow-purple-500/20'
                       : 'bg-[#1a1d26] hover:bg-[#1f232c]'
@@ -328,7 +278,7 @@ export function ExactDashboard() {
             </div>
           )}
 
-          <div className="p-4 lg:p-6 h-full overflow-auto">
+          <div className="p-6 h-full overflow-auto">
             {/* Header - Hidden on mobile */}
             {screenSize !== 'mobile' && (
               <div className="flex items-center justify-between mb-6">
@@ -366,46 +316,60 @@ export function ExactDashboard() {
               </div>
             )}
 
-            {/* Main Grid */}
-            <div className={`${getGridClass()} h-auto`}>
-              {/* Accessories Section */}
-              <div className={`${getAccessoriesColumnClass()} space-y-4`}>
-                <div className="flex items-center justify-between">
-                  <h2 className={`font-semibold ${
-                    screenSize === 'tv' ? 'text-xl' : 'text-lg'
-                  }`}>ACCESSORIES</h2>
+            {/* Main Grid - Fixed height container for perfect alignment */}
+            <div className="grid grid-cols-12 gap-4 h-[calc(100vh-180px)]">
+              {/* Left Column - Accessories */}
+              <div className="col-span-4 flex flex-col">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-lg font-semibold">ACCESSORIES</h2>
                   <MoreHorizontal className="w-5 h-5 text-gray-400" />
                 </div>
                 
-                <div className={`grid gap-3 ${
-                  screenSize === 'mobile' ? 'grid-cols-3' : 
-                  screenSize === 'tablet' ? 'grid-cols-3 lg:grid-cols-3' :
-                  'grid-cols-3'
-                }`}>
-                  {/* Accessory Cards */}
-                  {[
-                    { name: 'Nest Wi-Fi', status: 'Running', color: '#7c3aed', icon: Wifi },
-                    { name: 'Sony TV', status: 'Running', color: '#0ea5e9', icon: Monitor },
-                    { name: 'Router', status: 'Turned off', color: '#6b7280', icon: null }
-                  ].map((device) => (
-                    <div key={device.name} className="bg-[#1a1d26] rounded-2xl p-4 relative hover:bg-[#1f232c] transition-colors">
-                      <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style={{ backgroundColor: device.color }}>
-                        {device.icon && <device.icon className="w-5 h-5" />}
-                        {!device.icon && (
-                          <div className="w-5 h-3 bg-white rounded-sm flex flex-col justify-center">
-                            <div className="h-px bg-gray-700 mx-1" />
-                          </div>
-                        )}
-                      </div>
-                      <p className="text-sm font-medium mb-1">{device.name}</p>
-                      <p className="text-xs text-gray-400">{device.status}</p>
-                      <MoreHorizontal className="w-4 h-4 text-gray-400 absolute top-4 right-4" />
+                {/* Accessories Grid - Fixed height */}
+                <div className="grid grid-cols-3 gap-3 mb-4 h-[120px]">
+                  {/* Nest Wi-Fi */}
+                  <div className="bg-[#1a1d26] rounded-2xl p-4 relative hover:bg-[#1f232c] transition-colors h-full flex flex-col">
+                    <div className="w-10 h-10 bg-[#7c3aed] rounded-xl flex items-center justify-center mb-3">
+                      <Wifi className="w-5 h-5" />
                     </div>
-                  ))}
+                    <div className="mt-auto">
+                      <p className="text-sm font-medium mb-1">Nest Wi-Fi</p>
+                      <p className="text-xs text-gray-400">Running</p>
+                    </div>
+                    <MoreHorizontal className="w-4 h-4 text-gray-400 absolute top-4 right-4" />
+                  </div>
+
+                  {/* Sony TV */}
+                  <div className="bg-[#1a1d26] rounded-2xl p-4 relative hover:bg-[#1f232c] transition-colors h-full flex flex-col">
+                    <div className="w-10 h-10 bg-[#0ea5e9] rounded-xl flex items-center justify-center mb-3">
+                      <Monitor className="w-5 h-5" />
+                    </div>
+                    <div className="mt-auto">
+                      <p className="text-sm font-medium mb-1">Sony TV</p>
+                      <p className="text-xs text-gray-400">Running</p>
+                    </div>
+                    <MoreHorizontal className="w-4 h-4 text-gray-400 absolute top-4 right-4" />
+                  </div>
+
+                  {/* Router */}
+                  <div className="bg-[#1a1d26] rounded-2xl p-4 relative hover:bg-[#1f232c] transition-colors h-full flex flex-col">
+                    <div className="w-10 h-10 bg-gray-700 rounded-xl flex items-center justify-center mb-3">
+                      <div className="w-5 h-3 bg-white rounded-sm flex flex-col justify-center">
+                        <div className="h-px bg-gray-700 mx-1" />
+                        <div className="h-px bg-gray-700 mx-1 mt-1" />
+                        <div className="h-px bg-gray-700 mx-1 mt-1" />
+                      </div>
+                    </div>
+                    <div className="mt-auto">
+                      <p className="text-sm font-medium mb-1">Router</p>
+                      <p className="text-xs text-gray-400">Turned off</p>
+                    </div>
+                    <MoreHorizontal className="w-4 h-4 text-gray-400 absolute top-4 right-4" />
+                  </div>
                 </div>
 
-                {/* Music Player */}
-                <div className="bg-[#1a1d26] rounded-2xl p-4">
+                {/* Music Player - Takes remaining space */}
+                <div className="bg-[#1a1d26] rounded-2xl p-4 flex-1 flex flex-col">
                   <div className="flex items-center gap-3 mb-4">
                     <div className="w-10 h-10 bg-[#22c55e] rounded-xl flex items-center justify-center">
                       <Volume2 className="w-5 h-5" />
@@ -418,105 +382,80 @@ export function ExactDashboard() {
                     <p className="text-xs text-gray-400">Currently playing</p>
                   </div>
 
-                  <div className="mb-4">
-                    <div className={`w-full bg-gradient-to-br from-green-600 to-green-800 rounded-xl mb-2 relative overflow-hidden ${
-                      screenSize === 'mobile' ? 'h-24' : 'h-32'
-                    }`}>
+                  <div className="flex-1 flex flex-col">
+                    <div className="w-full h-32 bg-gradient-to-br from-green-600 to-green-800 rounded-xl mb-3 relative overflow-hidden">
                       <div className="absolute inset-0 bg-black/20" />
                       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
                     </div>
-                    <div className="flex items-center gap-2 mb-2">
+                    <div className="flex items-center gap-2 mb-4">
                       <span className="text-xs text-gray-400">2:32</span>
                       <div className="flex-1 h-1 bg-gray-700 rounded-full">
                         <div className="w-1/3 h-full bg-white rounded-full" />
                       </div>
                       <span className="text-xs text-gray-400">7:32</span>
                     </div>
-                  </div>
 
-                  <div className="flex items-center justify-center gap-4">
-                    <SkipBack className="w-5 h-5 text-gray-400 hover:text-white transition-colors cursor-pointer" />
-                    <button className="w-10 h-10 bg-white rounded-full flex items-center justify-center hover:bg-gray-100 transition-colors">
-                      <Pause className="w-5 h-5 text-black" />
-                    </button>
-                    <SkipForward className="w-5 h-5 text-gray-400 hover:text-white transition-colors cursor-pointer" />
-                    <Volume2 className="w-5 h-5 text-gray-400 hover:text-white transition-colors cursor-pointer" />
+                    <div className="flex items-center justify-center gap-4 mt-auto">
+                      <SkipBack className="w-5 h-5 text-gray-400 hover:text-white transition-colors cursor-pointer" />
+                      <button className="w-10 h-10 bg-white rounded-full flex items-center justify-center hover:bg-gray-100 transition-colors">
+                        <Pause className="w-5 h-5 text-black" />
+                      </button>
+                      <SkipForward className="w-5 h-5 text-gray-400 hover:text-white transition-colors cursor-pointer" />
+                      <Volume2 className="w-5 h-5 text-gray-400 hover:text-white transition-colors cursor-pointer" />
+                    </div>
                   </div>
                 </div>
               </div>
 
               {/* Right Column */}
-              <div className={`${getRightColumnClass()} space-y-4`}>
-                {/* WiFi Router Stats */}
-                <div className="bg-[#1a1d26] rounded-2xl p-4">
+              <div className="col-span-8 flex flex-col">
+                {/* WiFi Router Stats - Fixed height */}
+                <div className="bg-[#1a1d26] rounded-2xl p-4 h-[120px] mb-4 flex flex-col">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className={`font-semibold ${
-                      screenSize === 'tv' ? 'text-xl' : 'text-lg'
-                    }`}>Tp-Link Wifi Router</h3>
+                    <h3 className="text-lg font-semibold">Tp-Link Wifi Router</h3>
                     <MoreHorizontal className="w-5 h-5 text-gray-400" />
                   </div>
                   
-                  <div className={`grid gap-4 text-center ${
-                    screenSize === 'mobile' ? 'grid-cols-1' : 'grid-cols-3'
-                  }`}>
-                    <div>
-                      <p className={`font-bold text-[#22c55e] mb-1 ${
-                        screenSize === 'tv' ? 'text-3xl' : 'text-2xl'
-                      }`}>162.68 Mbps</p>
+                  <div className="grid grid-cols-3 gap-4 text-center flex-1">
+                    <div className="flex flex-col justify-center">
+                      <p className="text-2xl font-bold text-[#22c55e] mb-1">162.68 Mbps</p>
                       <p className="text-xs text-gray-400 flex items-center justify-center gap-1">
                         <Download className="w-3 h-3" />
                         Download
                       </p>
                     </div>
-                    <div>
-                      <p className={`font-bold text-[#f59e0b] mb-1 ${
-                        screenSize === 'tv' ? 'text-3xl' : 'text-2xl'
-                      }`}>198.53 Mbps</p>
+                    <div className="flex flex-col justify-center">
+                      <p className="text-2xl font-bold text-[#f59e0b] mb-1">198.53 Mbps</p>
                       <p className="text-xs text-gray-400 flex items-center justify-center gap-1">
                         <Upload className="w-3 h-3" />
                         Upload
                       </p>
                     </div>
-                    <div>
-                      <p className={`font-bold mb-1 ${
-                        screenSize === 'tv' ? 'text-3xl' : 'text-2xl'
-                      }`}>9ms</p>
+                    <div className="flex flex-col justify-center">
+                      <p className="text-2xl font-bold mb-1">9ms</p>
                       <p className="text-xs text-gray-400">Idle Latency</p>
                     </div>
                   </div>
                 </div>
 
-                <div className={`grid gap-4 ${
-                  screenSize === 'mobile' ? 'grid-cols-1' : 
-                  screenSize === 'tablet' ? 'grid-cols-1' :
-                  'grid-cols-2'
-                }`}>
+                {/* LED & Thermostat Row - Fixed height */}
+                <div className="grid grid-cols-2 gap-4 h-[280px] mb-4">
                   {/* LED Strips Light */}
-                  <div className="bg-[#1a1d26] rounded-2xl p-4">
+                  <div className="bg-[#1a1d26] rounded-2xl p-4 flex flex-col">
                     <div className="flex items-center justify-between mb-4">
-                      <h3 className={`font-semibold ${
-                        screenSize === 'tv' ? 'text-xl' : 'text-lg'
-                      }`}>LED STRIPS LIGHT</h3>
+                      <h3 className="text-lg font-semibold">LED STRIPS LIGHT</h3>
                       <Settings className="w-5 h-5 text-gray-400" />
                     </div>
                     
-                    <div className="relative mb-6">
-                      <div className={`mx-auto relative ${
-                        screenSize === 'mobile' ? 'w-24 h-24' :
-                        screenSize === 'tv' ? 'w-40 h-40' :
-                        'w-32 h-32'
-                      }`}>
+                    <div className="flex-1 flex flex-col items-center justify-center">
+                      <div className="w-32 h-32 mx-auto relative mb-4">
                         <div className="w-full h-full rounded-full border-8 border-gray-700 relative">
                           <div className="absolute inset-0 rounded-full border-8 border-transparent border-t-[#7c3aed] border-r-[#7c3aed] led-ring" />
                           <div className="absolute inset-2 rounded-full border-4 border-gray-600" />
                         </div>
                         <div className="absolute inset-0 flex items-center justify-center">
                           <div className="text-center">
-                            <p className={`font-bold ${
-                              screenSize === 'mobile' ? 'text-xl' :
-                              screenSize === 'tv' ? 'text-3xl' :
-                              'text-2xl'
-                            }`}>35%</p>
+                            <p className="text-2xl font-bold">35%</p>
                             <p className="text-xs text-gray-400">Brightness</p>
                           </div>
                         </div>
@@ -524,89 +463,77 @@ export function ExactDashboard() {
                           <Power className="w-5 h-5" />
                         </button>
                       </div>
-                    </div>
 
-                    <div className="space-y-2">
-                      <h4 className="text-sm font-medium text-gray-400">EFFECTS</h4>
-                      <div className="flex gap-2 justify-center">
-                        <div className="w-8 h-8 bg-gradient-to-r from-red-500 to-yellow-500 rounded-lg cursor-pointer hover:scale-110 transition-transform" />
-                        <div className="w-8 h-8 bg-gradient-to-r from-green-500 to-blue-500 rounded-lg cursor-pointer hover:scale-110 transition-transform" />
-                        <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg border-2 border-white cursor-pointer hover:scale-110 transition-transform" />
+                      <div className="space-y-2 mt-auto">
+                        <h4 className="text-sm font-medium text-gray-400">EFFECTS</h4>
+                        <div className="flex gap-2 justify-center">
+                          <div className="w-8 h-8 bg-gradient-to-r from-red-500 to-yellow-500 rounded-lg cursor-pointer hover:scale-110 transition-transform" />
+                          <div className="w-8 h-8 bg-gradient-to-r from-green-500 to-blue-500 rounded-lg cursor-pointer hover:scale-110 transition-transform" />
+                          <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg border-2 border-white cursor-pointer hover:scale-110 transition-transform" />
+                        </div>
                       </div>
                     </div>
                   </div>
 
-                  {/* Air Conditioner */}
-                  <div className="bg-[#1a1d26] rounded-2xl p-4">
+                  {/* Thermostat */}
+                  <div className="bg-[#1a1d26] rounded-2xl p-4 flex flex-col">
                     <div className="flex items-center justify-between mb-4">
-                      <h3 className={`font-semibold ${
-                        screenSize === 'tv' ? 'text-xl' : 'text-lg'
-                      }`}>AIR CONDITIONER</h3>
+                      <h3 className="text-lg font-semibold">THERMOSTAT</h3>
                       <div className="flex items-center gap-2">
                         <div className="w-2 h-2 bg-[#22c55e] rounded-full animate-pulse" />
-                        <span className="text-xs text-gray-400">2 report</span>
+                        <span className="text-xs text-gray-400">Active</span>
                       </div>
                     </div>
 
-                    <div className="relative mb-4">
-                      <div className={`mx-auto relative ${
-                        screenSize === 'mobile' ? 'w-20 h-20' :
-                        screenSize === 'tv' ? 'w-32 h-32' :
-                        'w-24 h-24'
-                      }`}>
+                    <div className="flex-1 flex flex-col items-center justify-center">
+                      <div className="w-28 h-28 mx-auto relative mb-4">
                         <div className="w-full h-full rounded-full border-4 border-gray-700 relative">
                           <div 
                             className="w-full h-full rounded-full border-4 border-[#7c3aed] absolute"
                             style={{
-                              background: `conic-gradient(#7c3aed 0deg, #7c3aed 60deg, transparent 60deg)`
+                              background: `conic-gradient(#7c3aed 0deg, #7c3aed 108deg, transparent 108deg)`
                             }}
                           />
                         </div>
                         <div className="absolute inset-0 flex items-center justify-center">
                           <div className="text-center">
-                            <p className={`font-bold ${
-                              screenSize === 'mobile' ? 'text-base' :
-                              screenSize === 'tv' ? 'text-xl' :
-                              'text-lg'
-                            }`}>15°C</p>
-                            <p className="text-xs text-gray-400">TEMPERATURE</p>
+                            <p className="text-xl font-bold">15°C</p>
+                            <p className="text-xs text-gray-400">TARGET</p>
                           </div>
                         </div>
                       </div>
-                    </div>
 
-                    <div className="space-y-2 text-sm">
-                      <div className="flex justify-between">
-                        <span className="text-gray-400">Saving Mode</span>
-                        <span>Up & Down</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-400">Wind Level</span>
-                        <span>54%</span>
+                      <div className="space-y-2 text-sm w-full mt-auto">
+                        <div className="flex justify-between">
+                          <span className="text-gray-400">Mode</span>
+                          <span>Cooling</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-400">Fan Speed</span>
+                          <span>Auto</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-400">Current</span>
+                          <span>18°C</span>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                {/* Electricity Consumed */}
-                <div className="bg-[#1a1d26] rounded-2xl p-4">
+                {/* Electricity Consumed - Takes remaining space */}
+                <div className="bg-[#1a1d26] rounded-2xl p-4 flex-1 flex flex-col">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className={`font-semibold ${
-                      screenSize === 'tv' ? 'text-xl' : 'text-lg'
-                    }`}>ELECTRICITY CONSUMED</h3>
+                    <h3 className="text-lg font-semibold">ELECTRICITY CONSUMED</h3>
                     <div className="flex items-center gap-2">
                       <Calendar className="w-4 h-4 text-gray-400" />
                       <span className="text-sm text-gray-400">Past 6 months</span>
                     </div>
                   </div>
 
-                  <div className="space-y-4">
+                  <div className="flex-1 flex flex-col">
                     {/* Chart */}
-                    <div className={`relative ${
-                      screenSize === 'mobile' ? 'h-24' :
-                      screenSize === 'tv' ? 'h-40' :
-                      'h-32'
-                    }`}>
+                    <div className="h-32 relative mb-4">
                       <svg className="w-full h-full" viewBox="0 0 400 120">
                         <defs>
                           <linearGradient id="energyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
