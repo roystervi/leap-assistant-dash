@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Header } from './components/Header';
 import { Sidebar } from './components/Sidebar';
 import Settings from './components/Settings';
+import { ExactDashboard } from './components/ExactDashboard';
 import { WeatherCard } from './components/widgets/WeatherCard';
 import { DeviceControls } from './components/widgets/DeviceControls';
 import { EnergyChart } from './components/widgets/EnergyChart';
@@ -19,46 +20,14 @@ export default function App() {
         return <Settings />;
       case 'overview':
       default:
-        return (
-          <div className="p-6">
-            <div className="max-w-7xl mx-auto">
-              <div className="mb-6">
-                <h1 className="text-3xl font-bold mb-2">Smart Home Dashboard</h1>
-                <p className="text-muted-foreground">
-                  Welcome back! Here's what's happening in your home.
-                </p>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                <div className="lg:col-span-2">
-                  <WeatherCard />
-                </div>
-                
-                <div className="xl:col-span-2">
-                  <DeviceControls />
-                </div>
-                
-                <div className="md:col-span-2 lg:col-span-3">
-                  <EnergyChart />
-                </div>
-                
-                <div>
-                  <SystemStatus />
-                </div>
-                
-                <div className="md:col-span-2">
-                  <QuickActions />
-                </div>
-                
-                <div className="lg:col-span-2">
-                  <ActivityFeed />
-                </div>
-              </div>
-            </div>
-          </div>
-        );
+        return <ExactDashboard />;
     }
   };
+
+  // For the exact dashboard, we'll render it directly without the original layout
+  if (activeSection === 'overview') {
+    return <ExactDashboard />;
+  }
 
   return (
     <div className="dark min-h-screen bg-background text-foreground">
