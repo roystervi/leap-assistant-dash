@@ -7,8 +7,9 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { useToast } from '@/components/ui/use-toast';
-import { Settings2, Wifi, WifiOff, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
+import { Settings2, Wifi, WifiOff, CheckCircle, AlertCircle, Loader2, Monitor, Smartphone, Tablet, Tv } from 'lucide-react';
 import { useHAConnection } from '../hooks/useHAConnection';
+import { useResponsiveDesign } from '../hooks/useResponsiveDesign';
 
 export default function Settings() {
   const { toast } = useToast();
@@ -21,6 +22,18 @@ export default function Settings() {
     testConnection,
     isTestingConnection
   } = useHAConnection();
+  
+  const {
+    screenSize,
+    orientation,
+    dimensions,
+    breakpointInfo,
+    isMobile,
+    isTablet,
+    isDesktop,
+    isTV,
+    isPortrait
+  } = useResponsiveDesign();
 
   const [formData, setFormData] = useState({
     url: haUrl,
@@ -246,11 +259,145 @@ export default function Settings() {
         <TabsContent value="appearance" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>Appearance Settings</CardTitle>
-              <CardDescription>Customize the look and feel of your dashboard</CardDescription>
+              <CardTitle>Responsive Display Settings</CardTitle>
+              <CardDescription>Configure how the dashboard adapts to different screen sizes</CardDescription>
             </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground">Appearance settings will be available in future updates.</p>
+            <CardContent className="space-y-6">
+              <div className="space-y-4">
+                <h4 className="font-medium">Current Screen Information</h4>
+                <div className="grid gap-4">
+                  <div className="flex items-center justify-between p-3 bg-primary/10 rounded-lg border border-primary/20">
+                    <div className="flex items-center gap-3">
+                      {isTV && <Tv className="h-5 w-5 text-primary" />}
+                      {isDesktop && <Monitor className="h-5 w-5 text-primary" />}
+                      {isTablet && <Tablet className="h-5 w-5 text-primary" />}
+                      {isMobile && <Smartphone className="h-5 w-5 text-primary" />}
+                      <div>
+                        <p className="font-medium">{breakpointInfo?.label}</p>
+                        <p className="text-sm text-muted-foreground">
+                          {dimensions.width}px × {dimensions.height}px
+                        </p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <Badge variant="secondary">{screenSize.toUpperCase()}</Badge>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        {orientation} mode
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="p-3 border rounded-lg text-center">
+                      <p className="text-sm font-medium">Width Range</p>
+                      <p className="text-xs text-muted-foreground">
+                        {breakpointInfo?.min}px - {breakpointInfo?.max === Infinity ? '∞' : breakpointInfo?.max + 'px'}
+                      </p>
+                    </div>
+                    <div className="p-3 border rounded-lg text-center">
+                      <p className="text-sm font-medium">Orientation</p>
+                      <p className="text-xs text-muted-foreground capitalize">{orientation}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <h4 className="font-medium">Screen Size Breakpoints</h4>
+                <div className="grid gap-4">
+                  <div className="flex items-center justify-between p-3 bg-secondary/50 rounded-lg">
+                    <div>
+                      <p className="font-medium">📺 TV Display</p>
+                      <p className="text-sm text-muted-foreground">1920px and above</p>
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                      Expanded layout with larger elements
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center justify-between p-3 bg-secondary/50 rounded-lg">
+                    <div>
+                      <p className="font-medium">🖥️ Desktop Monitor</p>
+                      <p className="text-sm text-muted-foreground">1200px - 1920px</p>
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                      Standard desktop layout
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center justify-between p-3 bg-secondary/50 rounded-lg">
+                    <div>
+                      <p className="font-medium">📱 Tablet</p>
+                      <p className="text-sm text-muted-foreground">768px - 1024px</p>
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                      Collapsible sidebar, stacked layout
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center justify-between p-3 bg-secondary/50 rounded-lg">
+                    <div>
+                      <p className="font-medium">📱 Mobile Phone</p>
+                      <p className="text-sm text-muted-foreground">320px - 768px</p>
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                      Overlay sidebar, single column
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <h4 className="font-medium">Responsive Features</h4>
+                <div className="space-y-3">
+                  <div className="flex items-center space-x-2">
+                    <CheckCircle className="h-4 w-4 text-green-500" />
+                    <span className="text-sm">Automatic layout adaptation</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <CheckCircle className="h-4 w-4 text-green-500" />
+                    <span className="text-sm">Touch-friendly controls on mobile</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <CheckCircle className="h-4 w-4 text-green-500" />
+                    <span className="text-sm">Collapsible navigation for tablets</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <CheckCircle className="h-4 w-4 text-green-500" />
+                    <span className="text-sm">Overlay navigation for mobile</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <CheckCircle className="h-4 w-4 text-green-500" />
+                    <span className="text-sm">Optimized text and button sizes</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <CheckCircle className="h-4 w-4 text-green-500" />
+                    <span className="text-sm">Portrait and landscape mode support</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <h4 className="font-medium">Layout Behavior</h4>
+                <div className="grid gap-3">
+                  <div className="p-3 border rounded-lg">
+                    <p className="font-medium text-sm mb-1">TV/Large Desktop</p>
+                    <p className="text-xs text-muted-foreground">16-column grid, expanded sidebar, larger typography</p>
+                  </div>
+                  <div className="p-3 border rounded-lg">
+                    <p className="font-medium text-sm mb-1">Desktop</p>
+                    <p className="text-xs text-muted-foreground">12-column grid, full sidebar, standard typography</p>
+                  </div>
+                  <div className="p-3 border rounded-lg">
+                    <p className="font-medium text-sm mb-1">Tablet</p>
+                    <p className="text-xs text-muted-foreground">2-column grid, hover-expandable sidebar</p>
+                  </div>
+                  <div className="p-3 border rounded-lg">
+                    <p className="font-medium text-sm mb-1">Mobile</p>
+                    <p className="text-xs text-muted-foreground">Single column, overlay sidebar, compact header</p>
+                  </div>
+                </div>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
