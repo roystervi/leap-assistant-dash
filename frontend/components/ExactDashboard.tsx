@@ -348,16 +348,16 @@ export function ExactDashboard() {
             )}
 
             {/* Main Grid - Fixed height container for perfect alignment */}
-            <div className="grid grid-cols-12 gap-3 h-[calc(100vh-180px)]">
-              {/* Left Column - Accessories */}
-              <div className="col-span-4 flex flex-col">
-                <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-lg font-semibold">ACCESSORIES</h2>
-                  <MoreHorizontal className="w-5 h-5 text-gray-400" />
-                </div>
-                
-                {/* Accessories Grid - Fixed height */}
-                <div className="grid grid-cols-3 gap-2 mb-3 h-[120px]">
+<div className="grid grid-cols-12 gap-4 h-[calc(100vh-180px)]">
+  {/* Left Column - Accessories */}
+  <div className="col-span-4 flex flex-col gap-4">
+    <div className="flex items-center justify-between">
+      <h2 className="text-lg font-semibold">ACCESSORIES</h2>
+      <MoreHorizontal className="w-5 h-5 text-gray-400" />
+    </div>
+    
+    {/* Accessories Grid - Fixed height */}
+    <div className="grid grid-cols-3 gap-3 h-[120px]">
                   {/* Nest Wi-Fi */}
                   <div className="bg-[#1a1d26] rounded-2xl p-4 relative hover:bg-[#1f232c] transition-colors h-full flex flex-col">
                     <div className="w-10 h-10 bg-[#7c3aed] rounded-xl flex items-center justify-center mb-3">
@@ -439,9 +439,9 @@ export function ExactDashboard() {
               </div>
 
               {/* Right Column */}
-              <div className="col-span-8 flex flex-col">
+              <div className="col-span-8 flex flex-col gap-4">
                 {/* WiFi Router Stats - Fixed height */}
-                <div className="bg-[#1a1d26] rounded-2xl p-4 h-[120px] mb-3 flex flex-col">
+                <div className="bg-[#1a1d26] rounded-2xl p-4 h-[120px] flex flex-col">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="text-lg font-semibold">Tp-Link Wifi Router</h3>
                     <MoreHorizontal className="w-5 h-5 text-gray-400" />
@@ -469,8 +469,8 @@ export function ExactDashboard() {
                   </div>
                 </div>
 
-                {/* LED & Alarm Row - Fixed height */}
-                <div className="grid grid-cols-2 gap-3 h-[280px] mb-3">
+                {/* LED & Alarm Row - Two separate cards */}
+                <div className="grid grid-cols-2 gap-4 h-[280px]">
                   {/* LED Strips Light */}
                   <div className="bg-[#1a1d26] rounded-2xl p-4 flex flex-col">
                     <div className="flex items-center justify-between mb-4">
@@ -603,7 +603,7 @@ export function ExactDashboard() {
                   </div>
                 </div>
 
-                {/* Electricity Consumed - Takes remaining space */}
+                {/* Electricity Consumed - Separate card */}
                 <div className="bg-[#1a1d26] rounded-2xl p-4 flex-1 flex flex-col">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="text-lg font-semibold">ELECTRICITY CONSUMED</h3>
