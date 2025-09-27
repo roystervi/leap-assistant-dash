@@ -24,11 +24,6 @@ export default function App() {
     }
   };
 
-  // For the exact dashboard, we'll render it directly without the original layout
-  if (activeSection === 'overview') {
-    return <ExactDashboard />;
-  }
-
   return (
     <div className="dark min-h-screen bg-background text-foreground">
       <div className="flex h-screen">
