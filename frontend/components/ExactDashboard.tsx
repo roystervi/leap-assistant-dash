@@ -324,10 +324,6 @@ export function ExactDashboard() {
                     }`}>My Workstation</h1>
                     <p className="text-sm text-gray-400">12 Devices running</p>
                   </div>
-                  <button className="bg-[#7c3aed] hover:bg-[#8b5cf6] text-white px-4 py-2 rounded-xl text-sm font-medium flex items-center gap-2 transition-colors">
-                    <Plus className="w-4 h-4" />
-                    Add New Device
-                  </button>
                 </div>
                 
                 <div className="flex items-center gap-6">
