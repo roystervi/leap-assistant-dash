@@ -619,7 +619,7 @@ export function ExactDashboard() {
 
                   <div className="flex-1 flex flex-col">
                     {/* Chart */}
-                    <div className="h-32 relative mb-4">
+                    <div className="h-32 relative mb-4 pl-8">
                       <svg className="w-full h-full" viewBox="0 0 400 120">
                         <defs>
                           <linearGradient id="energyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -640,12 +640,12 @@ export function ExactDashboard() {
                       </svg>
                       
                       {/* Y-axis labels */}
-                      <div className="absolute left-0 top-0 h-full flex flex-col justify-between text-xs text-gray-400 -ml-8">
-                        <span>100% ○</span>
-                        <span>75% ○</span>
-                        <span>50% ○</span>
-                        <span>25% ○</span>
-                        <span>0% ○</span>
+                      <div className="absolute left-0 top-0 h-full flex flex-col justify-between text-xs text-gray-400">
+                        <span>100%</span>
+                        <span>75%</span>
+                        <span>50%</span>
+                        <span>25%</span>
+                        <span>0%</span>
                       </div>
                     </div>
 
