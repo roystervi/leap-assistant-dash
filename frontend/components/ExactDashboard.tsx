@@ -21,13 +21,24 @@ import {
   Monitor,
   Menu,
   X,
-  Thermometer
+  Shield,
+  Lock,
+  Unlock,
+  Eye,
+  AlertTriangle
 } from 'lucide-react';
 
 export function ExactDashboard() {
   const [audioLevels, setAudioLevels] = useState<number[]>([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [screenSize, setScreenSize] = useState('desktop');
+  const [alarmStatus, setAlarmStatus] = useState<'disarmed' | 'armed_home' | 'armed_away' | 'triggered'>('disarmed');
+  const [alarmZones, setAlarmZones] = useState([
+    { id: 1, name: 'Front Door', status: 'secure', type: 'entry' },
+    { id: 2, name: 'Windows', status: 'secure', type: 'perimeter' },
+    { id: 3, name: 'Motion', status: 'secure', type: 'motion' },
+    { id: 4, name: 'Back Door', status: 'secure', type: 'entry' }
+  ]);
 
   useEffect(() => {
     // Generate random audio visualization
@@ -54,6 +65,30 @@ export function ExactDashboard() {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  const handleAlarmAction = (action: 'disarm' | 'arm_home' | 'arm_away') => {
+    setAlarmStatus(action === 'disarm' ? 'disarmed' : action === 'arm_home' ? 'armed_home' : 'armed_away');
+  };
+
+  const getAlarmStatusColor = () => {
+    switch (alarmStatus) {
+      case 'disarmed': return '#6b7280';
+      case 'armed_home': return '#f59e0b';
+      case 'armed_away': return '#22c55e';
+      case 'triggered': return '#ef4444';
+      default: return '#6b7280';
+    }
+  };
+
+  const getAlarmStatusText = () => {
+    switch (alarmStatus) {
+      case 'disarmed': return 'DISARMED';
+      case 'armed_home': return 'ARMED HOME';
+      case 'armed_away': return 'ARMED AWAY';
+      case 'triggered': return 'TRIGGERED';
+      default: return 'DISARMED';
+    }
+  };
 
   const getSidebarClass = () => {
     if (screenSize === 'mobile') {
@@ -475,13 +510,19 @@ export function ExactDashboard() {
                     </div>
                   </div>
 
-                  {/* Thermostat */}
+                  {/* Security Alarm Panel */}
                   <div className="bg-[#1a1d26] rounded-2xl p-4 flex flex-col">
                     <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-lg font-semibold">THERMOSTAT</h3>
+                      <h3 className="text-lg font-semibold">SECURITY ALARM</h3>
                       <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 bg-[#22c55e] rounded-full animate-pulse" />
-                        <span className="text-xs text-gray-400">Active</span>
+                        <div 
+                          className={`w-2 h-2 rounded-full ${
+                            alarmStatus === 'disarmed' ? 'bg-gray-500' :
+                            alarmStatus === 'triggered' ? 'bg-red-500 animate-pulse' :
+                            'bg-green-500 animate-pulse'
+                          }`} 
+                        />
+                        <span className="text-xs text-gray-400">{getAlarmStatusText()}</span>
                       </div>
                     </div>
 
@@ -489,32 +530,77 @@ export function ExactDashboard() {
                       <div className="w-28 h-28 mx-auto relative mb-4">
                         <div className="w-full h-full rounded-full border-4 border-gray-700 relative">
                           <div 
-                            className="w-full h-full rounded-full border-4 border-[#7c3aed] absolute"
+                            className={`w-full h-full rounded-full border-4 absolute transition-all duration-500 ${
+                              alarmStatus === 'triggered' ? 'animate-pulse' : ''
+                            }`}
                             style={{
-                              background: `conic-gradient(#7c3aed 0deg, #7c3aed 108deg, transparent 108deg)`
+                              borderColor: getAlarmStatusColor(),
+                              background: `conic-gradient(${getAlarmStatusColor()} 0deg, ${getAlarmStatusColor()} ${
+                                alarmStatus === 'disarmed' ? '0' : '360'
+                              }deg, transparent ${alarmStatus === 'disarmed' ? '0' : '360'}deg)`
                             }}
                           />
                         </div>
                         <div className="absolute inset-0 flex items-center justify-center">
                           <div className="text-center">
-                            <p className="text-xl font-bold">15°C</p>
-                            <p className="text-xs text-gray-400">TARGET</p>
+                            {alarmStatus === 'disarmed' ? (
+                              <Unlock className="w-8 h-8 text-gray-400 mx-auto mb-1" />
+                            ) : alarmStatus === 'triggered' ? (
+                              <AlertTriangle className="w-8 h-8 text-red-500 mx-auto mb-1" />
+                            ) : (
+                              <Shield className="w-8 h-8 text-green-500 mx-auto mb-1" />
+                            )}
+                            <p className="text-xs text-gray-400">STATUS</p>
                           </div>
                         </div>
                       </div>
 
-                      <div className="space-y-2 text-sm w-full mt-auto">
-                        <div className="flex justify-between">
-                          <span className="text-gray-400">Mode</span>
-                          <span>Cooling</span>
+                      <div className="space-y-2 w-full mt-auto">
+                        <div className="grid grid-cols-3 gap-2 mb-3">
+                          <button
+                            onClick={() => handleAlarmAction('disarm')}
+                            className={`p-2 rounded-lg text-xs font-medium transition-all ${
+                              alarmStatus === 'disarmed' 
+                                ? 'bg-gray-600 text-white' 
+                                : 'bg-gray-700 text-gray-400 hover:bg-gray-600'
+                            }`}
+                          >
+                            <Unlock className="w-4 h-4 mx-auto mb-1" />
+                            DISARM
+                          </button>
+                          <button
+                            onClick={() => handleAlarmAction('arm_home')}
+                            className={`p-2 rounded-lg text-xs font-medium transition-all ${
+                              alarmStatus === 'armed_home' 
+                                ? 'bg-amber-600 text-white' 
+                                : 'bg-gray-700 text-gray-400 hover:bg-amber-700'
+                            }`}
+                          >
+                            <Eye className="w-4 h-4 mx-auto mb-1" />
+                            HOME
+                          </button>
+                          <button
+                            onClick={() => handleAlarmAction('arm_away')}
+                            className={`p-2 rounded-lg text-xs font-medium transition-all ${
+                              alarmStatus === 'armed_away' 
+                                ? 'bg-green-600 text-white' 
+                                : 'bg-gray-700 text-gray-400 hover:bg-green-700'
+                            }`}
+                          >
+                            <Lock className="w-4 h-4 mx-auto mb-1" />
+                            AWAY
+                          </button>
                         </div>
-                        <div className="flex justify-between">
-                          <span className="text-gray-400">Fan Speed</span>
-                          <span>Auto</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-gray-400">Current</span>
-                          <span>18°C</span>
+                        
+                        <div className="grid grid-cols-2 gap-1 text-xs">
+                          {alarmZones.map((zone) => (
+                            <div key={zone.id} className="flex items-center justify-between bg-[#0f1117] rounded p-2">
+                              <span className="text-gray-400 truncate">{zone.name}</span>
+                              <div className={`w-2 h-2 rounded-full ${
+                                zone.status === 'secure' ? 'bg-green-500' : 'bg-red-500'
+                              }`} />
+                            </div>
+                          ))}
                         </div>
                       </div>
                     </div>
